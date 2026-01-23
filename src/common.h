@@ -14,8 +14,8 @@
 #include <cerrno>
 #include <ctime>
 
-#define MAX_PASSENGERS 100
-#define MAX_BRIDGE 50
+#define MAX_PASSENGERS 10000
+#define MAX_BRIDGE 10000
 
 #define IPC_KEY_BASE 0x1234
 

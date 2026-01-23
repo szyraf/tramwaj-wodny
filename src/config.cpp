@@ -1,4 +1,5 @@
 #include "config.h"
+#include "common.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -67,7 +68,13 @@ bool validate_config(const Config& cfg) {
         return false;
     }
     
-    int total_processes = cfg.tyniec_people + cfg.tyniec_bikes + cfg.wawel_people + cfg.wawel_bikes + 3;
+    int total_passengers = cfg.tyniec_people + cfg.tyniec_bikes + cfg.wawel_people + cfg.wawel_bikes;
+    int total_processes = total_passengers + 3;
+    
+    if (total_passengers > MAX_PASSENGERS) {
+        std::cerr << "Error: Total passengers (" << total_passengers << ") cannot exceed " << MAX_PASSENGERS << std::endl;
+        return false;
+    }
     
     if (total_processes > (int)rl.rlim_cur / 2) {
         std::cerr << "Error: Too many passengers. Max allowed: " << (rl.rlim_cur / 2 - 3) << std::endl;
@@ -75,9 +82,11 @@ bool validate_config(const Config& cfg) {
     }
     
     if (cfg.N <= 0) { std::cerr << "Error: N must be positive" << std::endl; return false; }
+    if (cfg.N > MAX_PASSENGERS) { std::cerr << "Error: N cannot exceed " << MAX_PASSENGERS << std::endl; return false; }
     if (cfg.M < 0) { std::cerr << "Error: M must be non-negative" << std::endl; return false; }
     if (cfg.M >= cfg.N) { std::cerr << "Error: M must be less than N" << std::endl; return false; }
     if (cfg.K <= 0) { std::cerr << "Error: K must be positive" << std::endl; return false; }
+    if (cfg.K > MAX_BRIDGE) { std::cerr << "Error: K cannot exceed " << MAX_BRIDGE << std::endl; return false; }
     if (cfg.K >= cfg.N) { std::cerr << "Error: K must be less than N" << std::endl; return false; }
     if (cfg.R <= 0) { std::cerr << "Error: R must be positive" << std::endl; return false; }
     if (cfg.T1 < 0) { std::cerr << "Error: T1 must be non-negative" << std::endl; return false; }

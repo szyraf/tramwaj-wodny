@@ -253,8 +253,7 @@ int main() {
         do_bridge_clear();
         
         if (state->ship_count == 0) {
-            log_msg(state, "CAPTAIN", "No passengers on board - skipping trip");
-            continue;
+            log_msg(state, "CAPTAIN", "No passengers on board - sailing empty to pick up passengers");
         }
         
         do_sailing();
